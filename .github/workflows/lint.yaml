@@ -19,4 +19,4 @@ jobs:
           node-version: 20.x
       - run: npm install
       - run: npm run build
-      - run: npm run list
+      - run: npm run lint
