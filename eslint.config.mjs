@@ -9,6 +9,7 @@ export default antfu({
     indent: 2,
     semi: true,
   },
+  ignores: ['.pnpm-store/**', '**/migration/*'],
 }, {
   rules: {
     'ts/no-redeclare': 'off',
