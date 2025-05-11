@@ -8,4 +8,5 @@ export default {
   dbCredentials: {
     url: './lib/db/sqlite.db',
   },
+  casing: 'snake_case',
 } satisfies Config

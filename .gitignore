@@ -25,3 +25,4 @@ logs
 
 # Database
 lib/db/sqlite.db
+lib/db/sqlite.db-journal
