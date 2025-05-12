@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1746978700824,
-      "tag": "0000_bizarre_vulcan",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1746988733727,
-      "tag": "0001_dear_mister_sinister",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1746989613951,
-      "tag": "0002_lethal_sersi",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1746990203782,
-      "tag": "0003_new_cargill",
+      "when": 1747061804374,
+      "tag": "0000_elite_hulk",
       "breakpoints": true
     }
   ]

@@ -2,14 +2,14 @@ name: Lint
 
 on:
   pull_request:
-    # Sequence of patterns matched against refs/heads
     branches:
       - main
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    env:
+      BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
 
     steps:
       - uses: actions/checkout@v4
