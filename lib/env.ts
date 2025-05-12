@@ -3,6 +3,7 @@ import tryParseEnv from './try-parse-env'
 
 const envSchema = z.object({
   NODE_ENV: z.string(),
+  BETTER_AUTH_SECRET: z.string(),
 })
 tryParseEnv(envSchema)
 export type EnvSchema = z.infer<typeof envSchema>
