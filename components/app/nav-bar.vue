@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import GithubLogin from '../github-login.vue'
+</script>
+
 <template>
   <div class="navbar bg-neutral text-neutral-content">
     <div class="navbar-start">
@@ -7,10 +11,7 @@
     </div>
     <div class="navbar-end">
       <AppThemeToggle />
-      <button class="btn btn-accent">
-        sign in with github
-        <Icon name="tabler:brand-github" size="24" />
-      </button>
+      <GithubLogin />
     </div>
   </div>
 </template>
