@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "e29369b6-af14-4d89-bd73-82e37a0ad50b",
+  "id": "32419686-90f1-4d39-afa6-77c954fb00df",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "location": {
@@ -28,8 +28,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "user_id": {
-          "name": "user_id",
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -56,15 +56,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -81,12 +81,12 @@
         }
       },
       "foreignKeys": {
-        "location_user_id_user_id_fk": {
-          "name": "location_user_id_user_id_fk",
+        "location_userId_user_id_fk": {
+          "name": "location_userId_user_id_fk",
           "tableFrom": "location",
           "tableTo": "user",
           "columnsFrom": [
-            "user_id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -123,22 +123,22 @@
           "notNull": false,
           "autoincrement": false
         },
-        "ended_at": {
-          "name": "ended_at",
+        "endedAt": {
+          "name": "endedAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "started_at": {
-          "name": "started_at",
+        "startedAt": {
+          "name": "startedAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "user_id": {
-          "name": "user_id",
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -158,22 +158,22 @@
           "notNull": true,
           "autoincrement": false
         },
-        "location_id": {
-          "name": "location_id",
+        "locationId": {
+          "name": "locationId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -182,12 +182,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "locationLog_user_id_user_id_fk": {
-          "name": "locationLog_user_id_user_id_fk",
+        "locationLog_userId_user_id_fk": {
+          "name": "locationLog_userId_user_id_fk",
           "tableFrom": "locationLog",
           "tableTo": "user",
           "columnsFrom": [
-            "user_id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -195,12 +195,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "locationLog_location_id_location_id_fk": {
-          "name": "locationLog_location_id_location_id_fk",
+        "locationLog_locationId_location_id_fk": {
+          "name": "locationLog_locationId_location_id_fk",
           "tableFrom": "locationLog",
           "tableTo": "location",
           "columnsFrom": [
-            "location_id"
+            "locationId"
           ],
           "columnsTo": [
             "id"
@@ -230,29 +230,29 @@
           "notNull": true,
           "autoincrement": false
         },
-        "user_id": {
-          "name": "user_id",
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "location_log_id": {
-          "name": "location_log_id",
+        "locationLogId": {
+          "name": "locationLogId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "created_at": {
-          "name": "created_at",
+        "createdAt": {
+          "name": "createdAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -261,12 +261,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "locationLogImage_user_id_user_id_fk": {
-          "name": "locationLogImage_user_id_user_id_fk",
+        "locationLogImage_userId_user_id_fk": {
+          "name": "locationLogImage_userId_user_id_fk",
           "tableFrom": "locationLogImage",
           "tableTo": "user",
           "columnsFrom": [
-            "user_id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -274,12 +274,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "locationLogImage_location_log_id_locationLog_id_fk": {
-          "name": "locationLogImage_location_log_id_locationLog_id_fk",
+        "locationLogImage_locationLogId_locationLog_id_fk": {
+          "name": "locationLogImage_locationLogId_locationLog_id_fk",
           "tableFrom": "locationLogImage",
           "tableTo": "locationLog",
           "columnsFrom": [
-            "location_log_id"
+            "locationLogId"
           ],
           "columnsTo": [
             "id"
