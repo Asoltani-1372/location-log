@@ -11,8 +11,9 @@ jobs:
     environment: build
     env:
       BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
-      GITHUB_CLIENT_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
-      GITHUB_CLIENT_ID: ${{ secrets.BETTER_AUTH_SECRET }}
+      AUTH_GITHUB_CLIENT_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+      AUTH_GITHUB_CLIENT_ID: ${{ secrets.BETTER_AUTH_SECRET }}
+      BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
 
     steps:
       - uses: actions/checkout@v4
