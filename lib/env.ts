@@ -4,8 +4,9 @@ import tryParseEnv from './try-parse-env'
 const envSchema = z.object({
   NODE_ENV: z.string(),
   BETTER_AUTH_SECRET: z.string(),
-  GITHUB_CLIENT_ID: z.string(),
-  GITHUB_CLIENT_SECRET: z.string(),
+  BETTER_AUTH_URL: z.string(),
+  AUTH_GITHUB_CLIENT_ID: z.string(),
+  AUTH_GITHUB_CLIENT_SECRET: z.string(),
 })
 tryParseEnv(envSchema)
 export type EnvSchema = z.infer<typeof envSchema>
