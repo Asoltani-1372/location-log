@@ -19,7 +19,9 @@ export const useAuthStore = defineStore('useAuthStore', () => {
       provider: 'github',
       callbackURL: '/dashboard',
       errorCallbackURL: '/error',
-
+      fetchOptions: {
+        headers,
+      },
     })
   }
   async function signOut() {
