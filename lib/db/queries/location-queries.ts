@@ -1,0 +1,44 @@
+import type { InsertLocationType } from '../schema'
+import { and, eq } from 'drizzle-orm'
+import { customAlphabet } from 'nanoid'
+import db from '..'
+import { location } from '../schema'
+
+const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstwxyz', 5)
+
+export async function findLocationByName(existing: InsertLocationType, userId: number) {
+  return !!(await db.query.location.findFirst({
+    where: and(
+      eq(location.name, existing.name),
+      eq(location.userId, userId),
+    ),
+  }))
+}
+
+export async function findLocationBySlug(slug: string) {
+  return await db.query.location.findFirst({
+    where: eq(location.slug, slug),
+  })
+}
+
+export async function findUniqueSlug(slug: string) {
+  let existingSlug = !!(await findLocationBySlug(slug))
+  // todo optimize this query
+  while (existingSlug) {
+    const id = nanoid()
+    const idSlug = `${slug}-${id}`
+    existingSlug = !!(await findLocationBySlug(idSlug))
+    if (!existingSlug) {
+      return idSlug
+    }
+  }
+}
+
+export async function insertLocatioQuery(insertable: InsertLocationType, slug: string, userId: number) {
+  const [created] = await db.insert(location).values({
+    ...insertable,
+    slug,
+    userId,
+  }).returning()
+  return created
+}
