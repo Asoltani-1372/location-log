@@ -68,6 +68,7 @@ onBeforeRouteLeave(() => {
           <Icon v-else name="tabler:arrow-left" size="24" @click="router.back()" />
           cancel
         </button>
+        <h1>test</h1>
         <button :disabled="loading" class="btn btn-primary" type="submit">
           <span v-if="loading" class="loading loading-spinner loading-md" />
 
