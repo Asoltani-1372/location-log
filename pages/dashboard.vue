@@ -1,8 +1,15 @@
 <script lang="ts" setup>
+const route = useRoute()
 const isSidebarOpen = ref(true)
+const sidebarStore = useSidebarStore()
+const locationStore = useLocationStore()
+
 function toogleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
   localStorage.setItem('isSidebarOpen', isSidebarOpen.value.toString())
+  if (route.path !== '/dashboard') {
+    locationStore.refresh()
+  }
 }
 onMounted(() => {
   isSidebarOpen.value = localStorage.getItem('isSidebarOpen') === 'true'
@@ -19,6 +26,22 @@ onMounted(() => {
       <div class="flex flex-col ">
         <SiderbarBtn :show-label="isSidebarOpen" icon="tabler:map" label="location" href="/dashboard/" />
         <SiderbarBtn :show-label="isSidebarOpen" icon="tabler:circle-plus-filled" label="Add Locations" href="/dashboard/add/" />
+        <div v-if="sidebarStore.sidebarItems.length" class="divider" />
+
+        <div v-if="sidebarStore.loading" class="px-4">
+          <div class="skeleton h-8 w-full" />
+        </div>
+        <div v-if="!sidebarStore.loading && sidebarStore.sidebarItems.length" class="flex flex-col">
+          <SiderbarBtn
+            v-for="item in sidebarStore.sidebarItems"
+            :key="item.id"
+            :label="item.label"
+            :icon="item.icon"
+            :href="item.href"
+            :show-label="isSidebarOpen"
+          />
+        </div>
+
         <div class="divider" />
         <SiderbarBtn :show-label="isSidebarOpen" icon="tabler:logout-2" label="Sign Out" href="/sign-out/" />
       </div>
