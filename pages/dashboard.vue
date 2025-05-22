@@ -46,8 +46,9 @@ onMounted(() => {
         <SiderbarBtn :show-label="isSidebarOpen" icon="tabler:logout-2" label="Sign Out" href="/sign-out/" />
       </div>
     </div>
-    <div class="flex-1">
+    <div class="flex-1 flex flex-col">
       <NuxtPage />
+      <AppMap class="flex-1" />
     </div>
   </div>
 </template>
