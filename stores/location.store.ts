@@ -4,8 +4,9 @@ export const useLocationStore = defineStore(('useLocationStore'), () => {
   })
 
   const sidebarStore = useSidebarStore()
+  const mapStore = useMapStore()
 
-  watchEffect(() => {
+  effect(() => {
     if (data.value) {
       sidebarStore.loading = false
       sidebarStore.sidebarItems = data.value.map(location => ({
@@ -15,6 +16,12 @@ export const useLocationStore = defineStore(('useLocationStore'), () => {
         id: `location-${location.id}`,
       }),
       )
+      mapStore.mapPoints = data.value.map(item => ({
+        label: item.name,
+        id: item.id,
+        lat: item.lat,
+        long: item.long,
+      }))
     }
     sidebarStore.loading = status.value === 'pending'
   })
