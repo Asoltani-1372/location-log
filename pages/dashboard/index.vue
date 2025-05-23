@@ -15,8 +15,8 @@ onMounted(() => {
     <div v-if="status === 'pending'">
       <span class="loading loading-spinner loading-md" />
     </div>
-    <div v-else-if="locaitons && locaitons.length > 0" class="flex flex-wrap gap-4 mt-4">
-      <div v-for="location in locaitons" :key="location.id" class="card card-compact bg-base-300 w-72 h-40">
+    <div v-else-if="locaitons && locaitons.length > 0" class="flex flex-nowrap gap-4 mt-4">
+      <div v-for="location in locaitons" :key="location.id" class="card card-compact bg-base-300 w-72 h-40 shrink-0 overflow-auto">
         <div class="card-body">
           <h1 class="text-xl">
             {{ location.name }}

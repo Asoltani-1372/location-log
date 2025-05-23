@@ -5,3 +5,13 @@ declare module 'h3' {
     user?: UserWithId
   }
 }
+
+export interface LatLongItem {
+  lat: number
+  long: number
+}
+
+export type mapPoints = {
+  label: string
+  id: number
+} & LatLongItem
