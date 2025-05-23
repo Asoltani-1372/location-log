@@ -2,6 +2,7 @@
 const route = useRoute()
 const isSidebarOpen = ref(true)
 const sidebarStore = useSidebarStore()
+const mapStore = useMapStore()
 const locationStore = useLocationStore()
 
 function toogleSidebar() {
@@ -39,6 +40,9 @@ onMounted(() => {
             :icon="item.icon"
             :href="item.href"
             :show-label="isSidebarOpen"
+            :icon-coler="mapStore.selectedPoint === item.location ? 'text-accent' : undefined"
+            @mouseenter="mapStore.selectedPoint = item.location ?? null"
+            @mouseleave="mapStore.selectedPoint = null"
           />
         </div>
 

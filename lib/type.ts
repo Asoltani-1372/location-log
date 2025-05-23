@@ -12,6 +12,7 @@ export interface LatLongItem {
 }
 
 export type mapPoints = {
-  label: string
+  name: string
   id: number
+  description: string | null
 } & LatLongItem
