@@ -14,14 +14,10 @@ export const useLocationStore = defineStore(('useLocationStore'), () => {
         icon: 'tabler:map-pin-filled',
         href: '#',
         id: `location-${location.id}`,
+        location,
       }),
       )
-      mapStore.mapPoints = data.value.map(item => ({
-        label: item.name,
-        id: item.id,
-        lat: item.lat,
-        long: item.long,
-      }))
+      mapStore.mapPoints = data.value
     }
     sidebarStore.loading = status.value === 'pending'
   })
