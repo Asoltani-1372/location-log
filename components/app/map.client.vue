@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+import type { LngLat } from 'maplibre-gl'
 import { CENTER_MAP } from './../../lib/constants'
 
 const mapStore = useMapStore()
@@ -9,6 +10,14 @@ const style = computed(() => {
 })
 const center = CENTER_MAP
 const zoom = 4
+
+function updateAddedPoint(location: LngLat) {
+  if (mapStore.addedPoint) {
+    mapStore.addedPoint.lat = location.lat
+    mapStore.addedPoint.long = location.lng
+  }
+}
+
 onMounted(() => {
   mapStore.init()
 })
@@ -17,9 +26,9 @@ onMounted(() => {
 <template>
   <MglMap :map-style="style" :center="center" :zoom="zoom">
     <MglNavigationControl />
-    <MglMarker draggable="true" :coordinates="center">
+    <MglMarker v-if="mapStore.addedPoint" draggable="true" :coordinates="center" @update:coordinates="updateAddedPoint">
       <template #marker>
-        <div class="tooltip  tooltip-top hover:cursor-pointer" data-tip="drag pin to select location">
+        <div class="tooltip tooltip-open tooltip-top hover:cursor-pointer" data-tip="drag pin to select location">
           <Icon name="tabler:map-pin-filled" size="32" class="text-warning" />
         </div>
       </template>
