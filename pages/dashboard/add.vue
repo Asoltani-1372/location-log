@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { FetchError } from 'ofetch'
+import type { Nominatim } from '~/lib/type'
 import { AppFormField } from '#components'
 import { CENTER_MAP } from '~/lib/constants'
 import { InsertLocation } from '~/lib/db/schema/location'
@@ -43,10 +44,22 @@ const onSubmit = handleSubmit(async (values) => {
     if (error.data?.data) {
       setErrors(error.data?.data)
     }
-    submitError.value = error.statusMessage || 'an unknow error occured'
+    submitError.value = getFetchErrorMessage(error)
   }
   loading.value = false
 })
+
+function searchResultSelected(result: Nominatim) {
+  setFieldValue('name', result.display_name)
+  mapStore.addedPoint = {
+    description: ',',
+    name: 'added Point',
+    id: 1,
+    long: +result.lon,
+    lat: +result.lat,
+    center_map: true,
+  }
+}
 
 onMounted(() => {
   mapStore.addedPoint = {
@@ -98,6 +111,7 @@ onBeforeRouteLeave(() => {
       <p class="text-xs text-gray-400">
         {{ formatNumber(controlledValues?.lat) }} , {{ formatNumber(controlledValues?.long) }}
       </p>
+
       <div class="flex justify-end gap-2">
         <button :disabled="loading" class="btn btn-outline" type="button">
           <span v-if="loading" class="loading loading-spinner loading-md" />
@@ -112,6 +126,8 @@ onBeforeRouteLeave(() => {
           submit
         </button>
       </div>
+      <div class="divider" />
     </form>
+    <AppSearch class="mt-4" @result-selected="searchResultSelected" />
   </div>
 </template>
