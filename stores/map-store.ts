@@ -4,7 +4,7 @@ import type { mapPoints } from '~/lib/type'
 export const useMapStore = defineStore('useMapStore', () => {
   const mapPoints = ref<mapPoints[]>([])
   const selectedPoint = ref<mapPoints | null>(null)
-  const addedPoint = ref<mapPoints | null>(null)
+  const addedPoint = ref<mapPoints & { center_map?: boolean } | null>(null)
   const shouldFlyto = ref(true)
   function selectPointWithoutFlyTo(point: mapPoints | null) {
     shouldFlyto.value = false
@@ -53,10 +53,10 @@ export const useMapStore = defineStore('useMapStore', () => {
     })
 
     watch(addedPoint, (nv, ov) => {
-      if (nv && !ov) {
+      if ((nv && !ov) || nv?.center_map) {
         myMap.map?.flyTo({
           center: [nv.long, nv.lat],
-          speed: 0.3,
+          speed: 1,
           zoom: 6,
         })
       }
