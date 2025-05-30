@@ -1,3 +1,4 @@
+import type { RouteLocationRaw } from 'vue-router'
 import type { UserWithId } from './auth'
 
 declare module 'h3' {
@@ -15,6 +16,8 @@ export type mapPoints = {
   name: string
   id: number
   description: string | null
+  to?: RouteLocationRaw
+  toLabel?: string
 } & LatLongItem
 
 export interface Nominatim {
