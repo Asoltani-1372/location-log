@@ -1,27 +1,23 @@
 <script lang="ts" setup>
-const route = useRoute()
-const mapStore = useMapStore()
-const slug = route.params.slug
-const { data: location, status, error } = await useFetch(`/api/locations/${slug}`)
+const locationStore = useLocationStore()
+const { currentLocation, currentLocationStatus, currentLocationError } = storeToRefs(locationStore)
 
-effect(() => {
-  if (location.value) {
-    mapStore.mapPoints = [location.value]
-  }
+onMounted(() => {
+  locationStore.refreshCurrentLocations()
 })
 </script>
 
 <template>
   <div class="p-4 min-h-64">
-    <div v-if="status === 'pending'">
+    <div v-if="currentLocationStatus === 'pending'">
       <span class="loading loading-spinner loading-md" />
     </div>
-    <div v-if="location && status !== 'pending'">
-      <h2>{{ location?.name }}</h2>
+    <div v-if="currentLocation && currentLocationStatus !== 'pending'">
+      <h2>{{ currentLocation?.name }}</h2>
       <p class="text-sm">
-        {{ location?.description }}
+        {{ currentLocation?.description }}
       </p>
-      <div v-if="!location.locationLogs.length" class="text-larg mt-4">
+      <div v-if="!currentLocation.locationLogs.length" class="text-larg mt-4">
         <p class="text-sm">
           add a location Log to get Started
         </p>
@@ -32,9 +28,9 @@ effect(() => {
       </div>
     </div>
 
-    <div v-if="error && status !== 'pending'" class="alert alert-error">
+    <div v-if="currentLocationError && currentLocationStatus !== 'pending'" class="alert alert-error">
       <h2 class="text-lg">
-        {{ error.statusMessage }}
+        {{ currentLocationError.statusMessage }}
       </h2>
     </div>
   </div>
