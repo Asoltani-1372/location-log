@@ -20,6 +20,17 @@ export async function findLocationBySlug(slug: string) {
     where: eq(location.slug, slug),
   })
 }
+export async function findLocationBySlugAndID(slug: string, userId: number) {
+  return await db.query.location.findFirst({
+    where: and(
+      eq(location.slug, slug),
+      eq(location.userId, userId),
+    ),
+    with: {
+      locationLogs: true,
+    },
+  })
+}
 
 export async function findUniqueSlug(slug: string) {
   let existing = !!(await findLocationBySlug(slug))

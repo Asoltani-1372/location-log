@@ -30,6 +30,7 @@ export const useMapStore = defineStore('useMapStore', () => {
 
       myMap.map?.fitBounds(bounds, {
         padding: 60,
+        maxZoom: 10,
       })
     })
     effect(() => {
@@ -48,6 +49,7 @@ export const useMapStore = defineStore('useMapStore', () => {
       else if (bounds) {
         myMap.map?.fitBounds(bounds, {
           padding: 60,
+          maxZoom: 10,
         })
       }
     })

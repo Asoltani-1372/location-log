@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import createMapPointFromLocation from '@/utils/mapPoints'
+
 const locationStore = useLocationStore()
 const mapStore = useMapStore()
 const { locaitons, status } = storeToRefs(locationStore)
@@ -9,7 +11,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
+  <div class="p-4 min-h-64">
     <h2 class="text-2xl p-2">
       Locations
     </h2>
@@ -17,13 +19,14 @@ onMounted(() => {
       <span class="loading loading-spinner loading-md" />
     </div>
     <div v-else-if="locaitons && locaitons.length > 0" class="flex flex-nowrap gap-4 mt-4">
-      <div
+      <NuxtLink
         v-for="location in locaitons" :key="location.id"
+        :to="{ name: 'dashboard-location-slug', params: { slug: location.slug } }"
         class="card card-compact bg-base-300 w-72 h-40 border-2 shrink-0 overflow-auto mb-4 hover:cursor-pointer"
-        :class="{ 'border-accent': location === mapStore.selectedPoint,
-                  'border-transparent': location !== mapStore.selectedPoint,
+        :class="{ 'border-accent': isPointSelected(location, mapStore.selectedPoint),
+                  'border-transparent': !isPointSelected(location, mapStore.selectedPoint),
         }"
-        @mouseenter="mapStore.selectedPoint = location"
+        @mouseenter="mapStore.selectedPoint = createMapPointFromLocation(location)"
         @mouseleave="mapStore.selectedPoint = null"
       >
         <div class="card-body">
@@ -32,7 +35,7 @@ onMounted(() => {
           </h1>
           <h1>{{ location.description }}</h1>
         </div>
-      </div>
+      </NuxtLink>
     </div>
     <div v-else class="flex flex-col gap-2 mt-4">
       <p>Add Location to get Started</p>
