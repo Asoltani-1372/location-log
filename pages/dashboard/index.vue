@@ -3,10 +3,10 @@ import createMapPointFromLocation from '@/utils/mapPoints'
 
 const locationStore = useLocationStore()
 const mapStore = useMapStore()
-const { locaitons, status } = storeToRefs(locationStore)
+const { locations, locationsStatus } = storeToRefs(locationStore)
 
 onMounted(() => {
-  locationStore.refresh()
+  locationStore.refreshLocations()
 })
 </script>
 
@@ -15,12 +15,12 @@ onMounted(() => {
     <h2 class="text-2xl p-2">
       Locations
     </h2>
-    <div v-if="status === 'pending'">
+    <div v-if="locationsStatus === 'pending'">
       <span class="loading loading-spinner loading-md" />
     </div>
-    <div v-else-if="locaitons && locaitons.length > 0" class="flex flex-nowrap gap-4 mt-4">
+    <div v-else-if="locations && locations.length > 0" class="flex flex-nowrap gap-4 mt-4">
       <NuxtLink
-        v-for="location in locaitons" :key="location.id"
+        v-for="location in locations" :key="location.id"
         :to="{ name: 'dashboard-location-slug', params: { slug: location.slug } }"
         class="card card-compact bg-base-300 w-72 h-40 border-2 shrink-0 overflow-auto mb-4 hover:cursor-pointer"
         :class="{ 'border-accent': isPointSelected(location, mapStore.selectedPoint),

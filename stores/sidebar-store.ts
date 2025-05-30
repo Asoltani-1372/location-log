@@ -7,14 +7,16 @@ export interface sidebarItem {
   href?: string
   id: string
   to?: RouteLocationRaw
-  mapPoint: mapPoints | null
+  mapPoint?: mapPoints | null
 }
 
 export const useSidebarStore = defineStore('useSidebarStore', () => {
   const sidebarItems = ref<sidebarItem[]>([])
+  const sidebarTopItems = ref<sidebarItem[]>([])
   const loading = ref(false)
   return {
     sidebarItems,
     loading,
+    sidebarTopItems,
   }
 })
