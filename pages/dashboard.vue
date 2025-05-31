@@ -1,11 +1,12 @@
 <script lang="ts" setup>
+import { CURRENT_LOCATION_PAGES, LOCATION_PAGES } from '~/lib/constants'
+
 const route = useRoute()
 const isSidebarOpen = ref(true)
 const sidebarStore = useSidebarStore()
 const mapStore = useMapStore()
 const locationStore = useLocationStore()
 const { currentLocation } = storeToRefs(locationStore)
-
 function toogleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
   localStorage.setItem('isSidebarOpen', isSidebarOpen.value.toString())
@@ -19,7 +20,7 @@ onMounted(() => {
 )
 
 effect(() => {
-  if (route.name === 'dashboard') {
+  if (LOCATION_PAGES.has(route.name?.toString() || '')) {
     sidebarStore.sidebarTopItems = [
       {
         id: 'link-dashboard',
@@ -35,7 +36,7 @@ effect(() => {
       },
     ]
   }
-  else if (route.name === 'dashboard-location-slug') {
+  else if (CURRENT_LOCATION_PAGES.has(route.name?.toString() || '')) {
     sidebarStore.sidebarTopItems = [
       {
         id: 'link-dashboard',
@@ -123,7 +124,7 @@ effect(() => {
       </div>
     </div>
     <div class="flex-1 ">
-      <div class="flex size-full bg-base-200" :class="{ 'flex-col': route.path !== '/dashboard/add/' }">
+      <div class="flex size-full bg-base-200" :class="{ 'flex-col': route.path !== '/dashboard/add' }">
         <NuxtPage />
         <AppMap class="flex-1" />
       </div>
