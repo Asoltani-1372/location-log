@@ -6,6 +6,12 @@ const { currentLocation, currentLocationStatus, currentLocationError } = storeTo
 onMounted(() => {
   locationStore.refreshCurrentLocations()
 })
+
+onBeforeRouteUpdate((to) => {
+  if (to.name === 'dashboard-location-slug') {
+    locationStore.refreshCurrentLocations()
+  }
+})
 </script>
 
 <template>

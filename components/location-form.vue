@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { FetchError } from 'ofetch'
 import type { InsertLocationType } from '~/lib/db/schema'
 import type { Nominatim } from '~/lib/type'
 import { CENTER_MAP } from '~/lib/constants'
@@ -6,19 +7,24 @@ import { InsertLocation } from '~/lib/db/schema'
 
 const props = defineProps<{
   onSubmit: (location: InsertLocationType) => Promise<any>
-  loading: boolean
-  submited: boolean
-  submitErrors: Record<string, string>
+  initialValues?: InsertLocationType | null
+  submitLabel?: string
+  submitIcon?: string
+  onSubmitComplete: () => void
 }>()
 const mapStore = useMapStore()
 const router = useRouter()
+
+const loading = ref(false)
+const submited = ref(false)
+const submitError = ref('')
 const { handleSubmit, errors, meta, setErrors, setFieldValue, controlledValues } = useForm({
   validationSchema: toTypedSchema(InsertLocation),
   initialValues: {
-    long: (CENTER_MAP as [number, number])[0],
-    lat: (CENTER_MAP as [number, number])[1],
-    name: '',
-    description: '',
+    long: props.initialValues?.long || (CENTER_MAP as [number, number])[0],
+    lat: props.initialValues?.lat || (CENTER_MAP as [number, number])[1],
+    name: props.initialValues?.name || '',
+    description: props.initialValues?.description || '',
   },
 })
 function formatNumber(value?: number | undefined) {
@@ -28,15 +34,31 @@ function formatNumber(value?: number | undefined) {
   return value.toFixed(4)
 }
 
-const onSubmit = handleSubmit(props.onSubmit)
+const onSubmit = handleSubmit(async (values: InsertLocationType) => {
+  try {
+    submitError.value = ''
+    loading.value = true
+    await props.onSubmit(values)
+    submited.value = true
+    props.onSubmitComplete()
+  }
+  catch (e) {
+    const error = e as FetchError
+    if (error.data?.data) {
+      setErrors(error.data?.data)
+    }
+    submitError.value = getFetchErrorMessage(error)
+  }
+  loading.value = false
+})
 
 onMounted(() => {
   mapStore.addedPoint = {
     description: ',',
-    name: 'added Point',
+    name: props.initialValues?.name || 'added Point',
     id: 1,
-    long: (CENTER_MAP as [number, number])[0],
-    lat: (CENTER_MAP as [number, number])[1],
+    long: props.initialValues?.long || (CENTER_MAP as [number, number])[0],
+    lat: props.initialValues?.lat || (CENTER_MAP as [number, number])[1],
   }
 })
 function searchResultSelected(result: Nominatim) {
@@ -51,7 +73,7 @@ function searchResultSelected(result: Nominatim) {
   }
 }
 onBeforeRouteLeave(() => {
-  if (!props.submited && meta.value.dirty) {
+  if (!submited.value && meta.value.dirty) {
     // eslint-disable-next-line no-alert
     const confirm = window.confirm('are u sure u want to leave , unsave Changes will be dissapear')
     if (!confirm) {
@@ -68,13 +90,12 @@ effect(() => {
     setFieldValue('lat', mapStore.addedPoint.lat)
   }
 })
-
-effect(() => {
-  setErrors(props.submitErrors)
-})
 </script>
 
 <template>
+  <div v-if="submitError" role="alert" class="alert alert-error">
+    <span>{{ submitError }}</span>
+  </div>
   <form class="flex flex-col gap-4 " @submit.prevent="onSubmit">
     <AppFormField name="name" :error="errors.name" label="name" :disabled="loading" />
     <AppFormField name="description" type="textarea" :error="errors.description" label="description" :disabled="loading" />
@@ -93,8 +114,8 @@ effect(() => {
       <button :disabled="loading" class="btn btn-primary" type="submit">
         <span v-if="loading" class="loading loading-spinner loading-md" />
 
-        <Icon v-else name="tabler:circle-plus-filled" size="24" />
-        submit
+        <Icon v-else :name="props.submitIcon" size="24" />
+        {{ props.submitLabel }}
       </button>
     </div>
   </form>

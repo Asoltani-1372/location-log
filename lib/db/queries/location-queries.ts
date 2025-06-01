@@ -7,12 +7,12 @@ import { location } from '../schema'
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstwxyz', 5)
 
 export async function findLocationByName(existing: InsertLocationType, userId: number) {
-  return !!(await db.query.location.findFirst({
+  return await db.query.location.findFirst({
     where: and(
       eq(location.name, existing.name),
       eq(location.userId, userId),
     ),
-  }))
+  })
 }
 
 export async function findLocationBySlug(slug: string) {
@@ -59,4 +59,13 @@ export async function findLocation(userId: number) {
     where: eq(location.userId, userId),
   },
   )
+}
+export async function updateLocationBySlug(updates: InsertLocationType, slug: string, userId: number) {
+  const [updated] = await db.update(location).set(updates).where(
+    and(
+      eq(location.slug, slug),
+      eq(location.userId, userId),
+    ),
+  ).returning()
+  return updated
 }
