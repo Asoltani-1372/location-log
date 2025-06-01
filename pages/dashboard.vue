@@ -1,11 +1,12 @@
 <script lang="ts" setup>
+import { CURRENT_LOCATION_PAGES, EDIT_PAGE, LOCATION_PAGES } from '~/lib/constants'
+
 const route = useRoute()
 const isSidebarOpen = ref(true)
 const sidebarStore = useSidebarStore()
 const mapStore = useMapStore()
 const locationStore = useLocationStore()
-const { currentLocation } = storeToRefs(locationStore)
-
+const { currentLocation, currentLocationStatus } = storeToRefs(locationStore)
 function toogleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
   localStorage.setItem('isSidebarOpen', isSidebarOpen.value.toString())
@@ -13,13 +14,19 @@ function toogleSidebar() {
     locationStore.refreshLocations()
   }
 }
+if (LOCATION_PAGES.has(route.name?.toString() || '')) {
+  await locationStore.refreshLocations()
+}
+if (CURRENT_LOCATION_PAGES.has(route.name?.toString() || '')) {
+  await locationStore.refreshCurrentLocations()
+}
 onMounted(() => {
   isSidebarOpen.value = localStorage.getItem('isSidebarOpen') === 'true'
 },
 )
 
 effect(() => {
-  if (route.name === 'dashboard') {
+  if (LOCATION_PAGES.has(route.name?.toString() || '')) {
     sidebarStore.sidebarTopItems = [
       {
         id: 'link-dashboard',
@@ -35,7 +42,7 @@ effect(() => {
       },
     ]
   }
-  else if (route.name === 'dashboard-location-slug') {
+  else if (CURRENT_LOCATION_PAGES.has(route.name?.toString() || '')) {
     sidebarStore.sidebarTopItems = [
       {
         id: 'link-dashboard',
@@ -49,18 +56,18 @@ effect(() => {
         to: {
           name: 'dashboard-location-slug-edit',
           params: {
-            slug: currentLocation.value?.slug,
+            slug: route.params?.slug,
           },
         },
         icon: 'tabler:map-pin-cog',
       },
       {
         id: 'link-dashboard',
-        label: (currentLocation.value && String(currentLocation.value?.name)) || 'view Logs',
+        label: (currentLocationStatus.value === 'pending' || !currentLocationStatus.value ? 'Loading...' : currentLocation.value && String(currentLocation.value?.name)) || '',
         to: {
           name: 'dashboard-location-slug',
           params: {
-            slug: currentLocation.value?.slug,
+            slug: route.params?.slug,
           },
         },
         icon: 'tabler:map',
@@ -71,7 +78,7 @@ effect(() => {
         to: {
           name: 'dashboard-location-slug-add',
           params: {
-            slug: currentLocation.value?.slug,
+            slug: route.params?.slug,
           },
         },
         icon: 'tabler:circle-plus-filled',
@@ -122,9 +129,14 @@ effect(() => {
         <SiderbarBtn :show-label="isSidebarOpen" icon="tabler:logout-2" label="Sign Out" href="/sign-out/" />
       </div>
     </div>
-    <div class="flex-1 ">
-      <div class="flex size-full bg-base-200" :class="{ 'flex-col': route.path !== '/dashboard/add/' }">
-        <NuxtPage />
+    <div class="flex-1 overflow-auto bg-base-200">
+      <div class="flex size-full" :class="{ 'flex-col': !EDIT_PAGE.has(route.name?.toString() || '') }">
+        <NuxtPage
+          :class="{
+            'shrink-0': EDIT_PAGE.has(route.name?.toString() || ''),
+            'w-96': EDIT_PAGE.has(route.name?.toString() || ''),
+          }"
+        />
         <AppMap class="flex-1" />
       </div>
     </div>

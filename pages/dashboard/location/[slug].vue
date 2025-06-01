@@ -1,9 +1,16 @@
 <script lang="ts" setup>
+const route = useRoute()
 const locationStore = useLocationStore()
 const { currentLocation, currentLocationStatus, currentLocationError } = storeToRefs(locationStore)
 
 onMounted(() => {
   locationStore.refreshCurrentLocations()
+})
+
+onBeforeRouteUpdate((to) => {
+  if (to.name === 'dashboard-location-slug') {
+    locationStore.refreshCurrentLocations()
+  }
 })
 </script>
 
@@ -12,7 +19,12 @@ onMounted(() => {
     <div v-if="currentLocationStatus === 'pending'">
       <span class="loading loading-spinner loading-md" />
     </div>
-    <div v-if="currentLocation && currentLocationStatus !== 'pending'">
+    <div v-if="currentLocationError && currentLocationStatus !== 'pending'" class="alert alert-error">
+      <h2 class="text-lg">
+        {{ currentLocationError.statusMessage }}
+      </h2>
+    </div>
+    <div v-if="route.name === 'dashboard-location-slug' && currentLocation && currentLocationStatus !== 'pending'">
       <h2>{{ currentLocation?.name }}</h2>
       <p class="text-sm">
         {{ currentLocation?.description }}
@@ -27,11 +39,8 @@ onMounted(() => {
         </button>
       </div>
     </div>
-
-    <div v-if="currentLocationError && currentLocationStatus !== 'pending'" class="alert alert-error">
-      <h2 class="text-lg">
-        {{ currentLocationError.statusMessage }}
-      </h2>
+    <div v-if="route.name !== 'dashboard-location-slug'">
+      <NuxtPage />
     </div>
   </div>
 </template>
