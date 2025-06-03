@@ -7,6 +7,7 @@ const sidebarStore = useSidebarStore()
 const mapStore = useMapStore()
 const locationStore = useLocationStore()
 const { currentLocation, currentLocationStatus } = storeToRefs(locationStore)
+
 function toogleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
   localStorage.setItem('isSidebarOpen', isSidebarOpen.value.toString())
@@ -50,40 +51,45 @@ effect(() => {
         href: '/dashboard',
         icon: 'tabler:arrow-left',
       },
-      {
-        id: 'link-location-edit',
-        label: 'Edit Location',
-        to: {
-          name: 'dashboard-location-slug-edit',
-          params: {
-            slug: route.params?.slug,
-          },
-        },
-        icon: 'tabler:map-pin-cog',
-      },
-      {
-        id: 'link-dashboard',
-        label: (currentLocationStatus.value === 'pending' || !currentLocationStatus.value ? 'Loading...' : currentLocation.value && String(currentLocation.value?.name)) || '',
-        to: {
-          name: 'dashboard-location-slug',
-          params: {
-            slug: route.params?.slug,
-          },
-        },
-        icon: 'tabler:map',
-      },
-      {
-        id: 'link-location-add',
-        label: 'Add Location Log',
-        to: {
-          name: 'dashboard-location-slug-add',
-          params: {
-            slug: route.params?.slug,
-          },
-        },
-        icon: 'tabler:circle-plus-filled',
-      },
+
     ]
+    if (currentLocation.value && currentLocationStatus.value !== 'pending') {
+      sidebarStore.sidebarTopItems.push(
+        {
+          id: 'link-location-edit',
+          label: 'Edit Location',
+          to: {
+            name: 'dashboard-location-slug-edit',
+            params: {
+              slug: route.params?.slug,
+            },
+          },
+          icon: 'tabler:map-pin-cog',
+        },
+        {
+          id: 'link-dashboard',
+          label: (!currentLocationStatus.value ? 'Loading...' : currentLocation.value && String(currentLocation.value?.name)) || '',
+          to: {
+            name: 'dashboard-location-slug',
+            params: {
+              slug: route.params?.slug,
+            },
+          },
+          icon: 'tabler:map',
+        },
+        {
+          id: 'link-location-add',
+          label: 'Add Location Log',
+          to: {
+            name: 'dashboard-location-slug-add',
+            params: {
+              slug: route.params?.slug,
+            },
+          },
+          icon: 'tabler:circle-plus-filled',
+        },
+      )
+    }
   }
 })
 </script>
@@ -96,6 +102,9 @@ effect(() => {
         <Icon v-else name="tabler:chevron-right" size="32" />
       </div>
       <div class="flex flex-col ">
+        <div v-if="route.path.startsWith('/dashboard/location') && currentLocationStatus === 'pending'" class="flex items-center justify-center">
+          <div class="loading" />
+        </div>
         <SiderbarBtn
           v-for="item in sidebarStore.sidebarTopItems"
           :key="item.id"
