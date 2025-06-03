@@ -7,6 +7,7 @@ const sidebarStore = useSidebarStore()
 const mapStore = useMapStore()
 const locationStore = useLocationStore()
 const { currentLocation, currentLocationStatus } = storeToRefs(locationStore)
+
 function toogleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
   localStorage.setItem('isSidebarOpen', isSidebarOpen.value.toString())
