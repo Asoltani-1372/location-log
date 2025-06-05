@@ -2,12 +2,12 @@
 import { CURRENT_LOCATION_PAGES, EDIT_PAGE, LOCATION_PAGES } from '~/lib/constants'
 
 const route = useRoute()
+
 const isSidebarOpen = ref(true)
 const sidebarStore = useSidebarStore()
 const mapStore = useMapStore()
 const locationStore = useLocationStore()
 const { currentLocation, currentLocationStatus } = storeToRefs(locationStore)
-
 function toogleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
   localStorage.setItem('isSidebarOpen', isSidebarOpen.value.toString())
