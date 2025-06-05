@@ -1,10 +1,11 @@
 <script lang="ts" setup>
+import type { InsertLocationLogType } from '~/lib/db/schema'
 import { CENTER_MAP } from '~/lib/constants'
 import { InsertLocationLog } from '~/lib/db/schema'
 
 const props = defineProps<{
-  initialValues?: InsertLocationLog | null
-  onSubmit: (location: InsertLocationLog) => Promise<any>
+  initialValues?: InsertLocationLogType | null
+  onSubmit: (location: InsertLocationLogType) => Promise<any>
   submitLabel?: string
   submitIcon?: string
   onSubmitComplete: () => void

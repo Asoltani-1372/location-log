@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { FetchError } from 'ofetch'
+import { } from '@/utils/mapPoints'
 
 const route = useRoute()
 const locationStore = useLocationStore()
@@ -96,6 +97,22 @@ onBeforeRouteUpdate((to) => {
           add Location Log
           <Icon name="tabler:map-pin-plus" size="24" />
         </NuxtLink>
+      </div>
+      <div v-else-if="route.name === 'dashboard-location-slug' && currentLocation && currentLocation.locationLogs.length > 0" class="location-list">
+        <LocationCard
+          v-for="log in currentLocation?.locationLogs"
+          :key="log.id"
+          :map-point="createMapPointFromLocationLog(log)"
+        >
+          <template #top>
+            <span v-if="log.startedAt !== log.endedAt">
+              <p class="text-sm italic text-gray-500">{{ formatDate(log.startedAt) }} / {{ formatDate(log.endedAt) }}</p>
+            </span>
+            <span v-else>
+              <p class="text-sm italic text-gray-500">{{ formatDate(log.startedAt) }}</p>
+            </span>
+          </template>
+        </LocationCard>
       </div>
     </div>
     <div v-if="route.name !== 'dashboard-location-slug'">

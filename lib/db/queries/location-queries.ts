@@ -1,4 +1,4 @@
-import type { InsertLocation } from '../schema'
+import type { InsertLocationType } from '../schema'
 import { and, eq } from 'drizzle-orm'
 import { customAlphabet } from 'nanoid'
 import db from '..'
@@ -6,7 +6,7 @@ import { location } from '../schema'
 
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstwxyz', 5)
 
-export async function findLocationByName(existing: InsertLocation, userId: number) {
+export async function findLocationByName(existing: InsertLocationType, userId: number) {
   return await db.query.location.findFirst({
     where: and(
       eq(location.name, existing.name),
@@ -27,7 +27,12 @@ export async function findLocationBySlugAndID(slug: string, userId: number) {
       eq(location.userId, userId),
     ),
     with: {
-      locationLogs: true,
+      locationLogs: {
+        orderBy(fields, operators) {
+          return operators.desc(fields.startedAt)
+        },
+      },
+
     },
   })
 }
@@ -45,7 +50,7 @@ export async function findUniqueSlug(slug: string) {
   }
   return slug
 }
-export async function insertLocatioQuery(insertable: InsertLocation, slug: string, userId: number) {
+export async function insertLocatioQuery(insertable: InsertLocationType, slug: string, userId: number) {
   const [created] = await db.insert(location).values({
     ...insertable,
     slug,
@@ -60,7 +65,7 @@ export async function findLocation(userId: number) {
   },
   )
 }
-export async function updateLocationBySlug(updates: InsertLocation, slug: string, userId: number) {
+export async function updateLocationBySlug(updates: InsertLocationType, slug: string, userId: number) {
   const [updated] = await db.update(location).set(updates).where(
     and(
       eq(location.slug, slug),

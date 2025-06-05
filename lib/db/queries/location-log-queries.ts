@@ -1,10 +1,10 @@
-import type { InsertLocationLog } from '../schema'
+import type { InsertLocationLogType } from '../schema'
 import db from '..'
 import { locationLog } from '../schema'
 
 export async function insertLocationLog(
   locationId: number,
-  insertable: InsertLocationLog,
+  insertable: InsertLocationLogType,
   userId: number,
 ) {
   const [inserted] = await db.insert(locationLog).values({
