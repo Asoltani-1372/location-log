@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { InsertLocationType } from '~/lib/db/schema/location'
+import type { InsertLocationType } from '~/lib/db/schema'
 
 const route = useRoute()
 const { $csrfFetch } = useNuxtApp()
@@ -22,12 +22,15 @@ function onSubmitComplete() {
 </script>
 
 <template>
-  <LocationForm
-    v-if=" locationStore.currentLocationStatus !== 'pending'"
-    :on-submit
-    :initial-values="locationStore.currentLocation"
-    submit-icon="tabler:map-pin-up"
-    submit-label="Update"
-    :on-submit-complete="onSubmitComplete"
-  />
+  <div class="container max-w-md mx-auto p-4">
+    <LocationForm
+      v-if=" locationStore.currentLocationStatus !== 'pending' && locationStore.currentLocation"
+      :on-submit
+      :initial-values="locationStore.currentLocation"
+      submit-icon="tabler:map-pin-up"
+      :zoom="11"
+      submit-label="Update"
+      :on-submit-complete="onSubmitComplete"
+    />
+  </div>
 </template>

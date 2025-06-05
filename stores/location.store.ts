@@ -1,5 +1,5 @@
 import type { sidebarItem } from './sidebar-store'
-import type { SelectLocationWithLog } from '~/lib/db/schema'
+import type { SelectLocationWithLogs } from '~/lib/db/schema'
 import type { mapPoints } from '~/lib/type'
 import { CURRENT_LOCATION_PAGES, LOCATION_PAGES } from '~/lib/constants'
 import createMapPointFromLocation from '~/utils/mapPoints'
@@ -12,7 +12,7 @@ export const useLocationStore = defineStore(('useLocationStore'), () => {
   const locationUrlWithSlug = computed(() => `/api/locations/${route.params?.slug}`)
   const { data: currentLocation, status: currentLocationStatus, error: currentLocationError, refresh: refreshCurrentLocations,
   }
-    = useFetch<SelectLocationWithLog>(locationUrlWithSlug, {
+    = useFetch<SelectLocationWithLogs>(locationUrlWithSlug, {
       lazy: true,
       immediate: false,
       watch: false,
