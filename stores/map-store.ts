@@ -1,5 +1,6 @@
 import type { LngLatBounds } from 'maplibre-gl'
 import type { mapPoints } from '~/lib/type'
+import { CENTER_MAP } from '~/lib/constants'
 
 export const useMapStore = defineStore('useMapStore', () => {
   const mapPoints = ref<mapPoints[]>([])
@@ -18,8 +19,12 @@ export const useMapStore = defineStore('useMapStore', () => {
 
     effect(() => {
       const firstPoint = mapPoints.value[0]
-      if (!firstPoint)
-        return
+      if (!firstPoint) {
+        myMap.map?.flyTo({
+          center: CENTER_MAP,
+          zoom: 2,
+        })
+      }
 
       bounds = mapPoints.value.reduce((bounds, point) => {
         return bounds.extend([point.long, point.lat])

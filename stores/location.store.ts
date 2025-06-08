@@ -40,10 +40,31 @@ export const useLocationStore = defineStore(('useLocationStore'), () => {
       mapStore.mapPoints = mapPoints
     }
     else if (currentLocation.value && CURRENT_LOCATION_PAGES.has(route.name?.toString() || '')) {
-      sidebarStore.sidebarItems = []
-      mapStore.mapPoints = [currentLocation.value]
+      const mapPoints: mapPoints[] = []
+      const sidebarItem: sidebarItem[] = []
+      currentLocation.value?.locationLogs.forEach((log) => {
+        const mapPoint = createMapPointFromLocationLog(log)
+        sidebarItem.push({
+          label: log.name,
+          icon: 'tabler:map-pin-filled',
+          to: { name: 'dashboard-location-slug-id', params: { id: log.id } },
+          id: `location-log-${log.id}`,
+          mapPoint,
+        })
+        mapPoints.push(mapPoint)
+      })
+      sidebarStore.sidebarItems = sidebarItem
+      if (mapPoints.length) {
+        mapStore.mapPoints = mapPoints
+      }
+      else {
+        mapStore.mapPoints = [currentLocation.value]
+      }
     }
     sidebarStore.loading = locationsStatus.value === 'pending'
+    if (sidebarStore.loading) {
+      mapStore.mapPoints = []
+    }
   })
   return {
     locations,
