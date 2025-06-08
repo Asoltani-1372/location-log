@@ -20,7 +20,7 @@ const route = useRoute()
       class="flex gap-2 p-2 hover:bg-base-300 hover:cursor-pointer flex-nowrap"
     >
       <Icon :name="props.icon" size="24" :class="iconColer" />
-      <Transition name="grow">
+      <Transition name="grow" class="truncate">
         <span v-if="props.showLabel">
           {{ props.label }}
         </span>
