@@ -1,7 +1,7 @@
 import type { sidebarItem } from './sidebar-store'
 import type { SelectLocationWithLogs } from '~/lib/db/schema'
 import type { mapPoints } from '~/lib/type'
-import { CURRENT_LOCATION_PAGES, LOCATION_PAGES } from '~/lib/constants'
+import { CURRENT_LOCATION_PAGES, LOCATION_LOG_PAGES, LOCATION_PAGES } from '~/lib/constants'
 import createMapPointFromLocation from '~/utils/mapPoints'
 
 export const useLocationStore = defineStore(('useLocationStore'), () => {
@@ -10,9 +10,18 @@ export const useLocationStore = defineStore(('useLocationStore'), () => {
     lazy: true,
   })
   const locationUrlWithSlug = computed(() => `/api/locations/${route.params?.slug}`)
+  const locationLogUrlWithId = computed(() => `/api/locations/${route.params?.slug}/${route.params.id}`)
+
   const { data: currentLocation, status: currentLocationStatus, error: currentLocationError, refresh: refreshCurrentLocations,
   }
     = useFetch<SelectLocationWithLogs>(locationUrlWithSlug, {
+      lazy: true,
+      immediate: false,
+      watch: false,
+    })
+  const { data: currentLocationLog, status: currentLocationLogStatus, error: currentLocationLogError, refresh: refreshCurrentLocationsLog,
+  }
+    = useFetch<SelectLocationWithLogs>(locationLogUrlWithId, {
       lazy: true,
       immediate: false,
       watch: false,
@@ -61,6 +70,10 @@ export const useLocationStore = defineStore(('useLocationStore'), () => {
         mapStore.mapPoints = [currentLocation.value]
       }
     }
+    else if (currentLocationLog.value && LOCATION_LOG_PAGES.has(route.name?.toString() || '')) {
+      sidebarStore.sidebarItems = []
+      mapStore.mapPoints = [currentLocationLog.value]
+    }
     sidebarStore.loading = locationsStatus.value === 'pending'
     if (sidebarStore.loading) {
       mapStore.mapPoints = []
@@ -74,5 +87,9 @@ export const useLocationStore = defineStore(('useLocationStore'), () => {
     currentLocationStatus,
     currentLocationError,
     refreshCurrentLocations,
+    currentLocationLog,
+    currentLocationLogStatus,
+    currentLocationLogError,
+    refreshCurrentLocationsLog,
   }
 })

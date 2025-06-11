@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CURRENT_LOCATION_PAGES, EDIT_PAGE, LOCATION_PAGES } from '~/lib/constants'
+import { CURRENT_LOCATION_PAGES, EDIT_PAGE, LOCATION_LOG_PAGES, LOCATION_PAGES } from '~/lib/constants'
 
 const route = useRoute()
 
@@ -20,6 +20,9 @@ if (LOCATION_PAGES.has(route.name?.toString() || '')) {
 }
 if (CURRENT_LOCATION_PAGES.has(route.name?.toString() || '')) {
   await locationStore.refreshCurrentLocations()
+}
+if (LOCATION_LOG_PAGES.has(route.name?.toString() || '')) {
+  await locationStore.refreshCurrentLocationsLog()
 }
 onMounted(() => {
   isSidebarOpen.value = localStorage.getItem('isSidebarOpen') === 'true'
@@ -89,6 +92,54 @@ effect(() => {
           icon: 'tabler:circle-plus-filled',
         },
       )
+    }
+    else if (LOCATION_LOG_PAGES.has(route.name?.toString() || '')) {
+      if (currentLocation.value && currentLocationStatus.value !== 'pending') {
+        sidebarStore.sidebarTopItems = sidebarStore.sidebarTopItems = [{
+          id: 'link-location',
+          label: `Back to "${currentLocation.value.name}"`,
+          to: {
+            name: 'dashboard-location-slug',
+            params: {
+              slug: route.params.slug,
+            },
+          },
+          icon: 'tabler:arrow-left',
+        }, {
+          id: 'link-view-location-log',
+          label: 'View Log',
+          to: {
+            name: 'dashboard-location-slug-id',
+            params: {
+              slug: route.params.slug,
+              id: route.params.id,
+            },
+          },
+          icon: 'tabler:map-pin',
+        }, {
+          id: 'link-edit-location-log',
+          label: 'Edit Log',
+          to: {
+            name: 'dashboard-location-slug-id-edit',
+            params: {
+              slug: route.params.slug,
+              id: route.params.id,
+            },
+          },
+          icon: 'tabler:map-pin-cog',
+        }, {
+          id: 'link-location-log-images',
+          label: 'Manage Images',
+          to: {
+            name: 'dashboard-location-slug-id-images',
+            params: {
+              slug: route.params.slug,
+              id: route.params.id,
+            },
+          },
+          icon: 'tabler:photo-cog',
+        }]
+      }
     }
   }
 })

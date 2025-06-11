@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { InsertLocation } from '~/lib/db/schema/location'
+import type { InsertLocationType } from '~/lib/db/schema/location'
 
 const { $csrfFetch } = useNuxtApp()
 
-async function onSubmit(values: InsertLocation) {
+async function onSubmit(values: InsertLocationType) {
   await $csrfFetch('/api/locations', {
     method: 'post',
     body: values,
