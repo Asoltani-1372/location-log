@@ -16,3 +16,8 @@ export const EDIT_PAGE = new Set([
   'dashboard-location-slug-add',
   'dashboard-location-slug-edit',
 ])
+export const LOCATION_LOG_PAGES = new Set([
+  'dashboard-location-slug-id',
+  'dashboard-location-slug-id-edit',
+  'dashboard-location-slug-id-add',
+])
