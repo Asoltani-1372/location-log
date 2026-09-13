@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import GithubLogin from '../github-login.vue'
-</script>
-
 <template>
   <div class="navbar bg-neutral text-neutral-content">
     <div class="navbar-start">
@@ -11,7 +7,6 @@ import GithubLogin from '../github-login.vue'
     </div>
     <div class="navbar-end">
       <AppThemeToggle />
-      <GithubLogin />
     </div>
   </div>
 </template>

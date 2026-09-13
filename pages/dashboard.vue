@@ -93,53 +93,42 @@ effect(() => {
         },
       )
     }
-    else if (LOCATION_LOG_PAGES.has(route.name?.toString() || '')) {
-      if (currentLocation.value && currentLocationStatus.value !== 'pending') {
-        sidebarStore.sidebarTopItems = sidebarStore.sidebarTopItems = [{
-          id: 'link-location',
-          label: `Back to "${currentLocation.value.name}"`,
-          to: {
-            name: 'dashboard-location-slug',
-            params: {
-              slug: route.params.slug,
-            },
+  }
+  else if (LOCATION_LOG_PAGES.has(route.name?.toString() || '')) {
+    if (currentLocation.value && currentLocationStatus.value !== 'pending') {
+      sidebarStore.sidebarTopItems = sidebarStore.sidebarTopItems = [{
+        id: 'link-location',
+        label: `Back to "${currentLocation.value.name}"`,
+        to: {
+          name: 'dashboard-location-slug',
+          params: {
+            slug: route.params.slug,
           },
-          icon: 'tabler:arrow-left',
-        }, {
-          id: 'link-view-location-log',
-          label: 'View Log',
-          to: {
-            name: 'dashboard-location-slug-id',
-            params: {
-              slug: route.params.slug,
-              id: route.params.id,
-            },
+        },
+        icon: 'tabler:arrow-left',
+      }, {
+        id: 'link-view-location-log',
+        label: 'View Log',
+        to: {
+          name: 'dashboard-location-slug-id',
+          params: {
+            slug: route.params.slug,
+            id: route.params.id,
           },
-          icon: 'tabler:map-pin',
-        }, {
-          id: 'link-edit-location-log',
-          label: 'Edit Log',
-          to: {
-            name: 'dashboard-location-slug-id-edit',
-            params: {
-              slug: route.params.slug,
-              id: route.params.id,
-            },
+        },
+        icon: 'tabler:map-pin',
+      }, {
+        id: 'link-edit-location-log',
+        label: 'Edit Log',
+        to: {
+          name: 'dashboard-location-slug-id-edit',
+          params: {
+            slug: route.params.slug,
+            id: route.params.id,
           },
-          icon: 'tabler:map-pin-cog',
-        }, {
-          id: 'link-location-log-images',
-          label: 'Manage Images',
-          to: {
-            name: 'dashboard-location-slug-id-images',
-            params: {
-              slug: route.params.slug,
-              id: route.params.id,
-            },
-          },
-          icon: 'tabler:photo-cog',
-        }]
-      }
+        },
+        icon: 'tabler:map-pin-cog',
+      }]
     }
   }
 })
@@ -184,9 +173,6 @@ effect(() => {
             @mouseleave="mapStore.selectedPoint = null"
           />
         </div>
-
-        <div class="divider" />
-        <SiderbarBtn :show-label="isSidebarOpen" icon="tabler:logout-2" label="Sign Out" href="/sign-out/" />
       </div>
     </div>
     <div class="flex-1 overflow-auto bg-base-200">

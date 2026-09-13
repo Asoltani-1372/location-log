@@ -8,6 +8,20 @@
       "when": 1747596738920,
       "tag": "0000_public_silk_fever",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1789240938612,
+      "tag": "0001_add_location_image",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1789243824490,
+      "tag": "0002_drop_image_tables",
+      "breakpoints": true
     }
   ]
 }

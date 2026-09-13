@@ -1,14 +1,12 @@
-import process from 'node:process'
-import Database from 'better-sqlite3'
-import { drizzle } from 'drizzle-orm/better-sqlite3'
+import { createClient } from '@libsql/client'
+import { drizzle } from 'drizzle-orm/libsql'
+import env from '../env'
 import * as schema from './schema'
 
-const sqlite = new Database('./lib/db/sqlite.db')
-const db = drizzle(sqlite, { schema })
-
-// Ensure the database is properly closed when the application shuts down
-process.on('exit', () => {
-  sqlite.close()
+const client = createClient({
+  url: env.TURSO_DATABASE_URL,
+  authToken: env.TURSO_AUTH_TOKEN,
 })
+const db = drizzle(client, { schema })
 
 export default db

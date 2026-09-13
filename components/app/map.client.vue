@@ -1,13 +1,27 @@
 <script setup lang="ts">
 import type { MglEvent } from '@indoorequal/vue-maplibre-gl'
-import type { LngLat } from 'maplibre-gl'
+import type { LngLat, StyleSpecification } from 'maplibre-gl'
+import localizeMapStyle from '~/utils/localize-map-style'
 import { CENTER_MAP } from './../../lib/constants'
+
+const LIBERTY_STYLE_URL = 'https://tiles.openfreemap.org/styles/liberty'
+let cachedLibertyStyle: StyleSpecification | null = null
 
 const mapStore = useMapStore()
 const colorMode = useColorMode()
 
-const style = computed(() => {
-  return colorMode.value === 'dark' ? '/styles/dark.json' : 'https://tiles.openfreemap.org/styles/liberty'
+const style = ref<string | StyleSpecification>('/styles/dark.json')
+
+watchEffect(async () => {
+  if (colorMode.value === 'dark') {
+    style.value = '/styles/dark.json'
+    return
+  }
+  if (!cachedLibertyStyle) {
+    const fetched = await $fetch<StyleSpecification>(LIBERTY_STYLE_URL)
+    cachedLibertyStyle = localizeMapStyle(fetched)
+  }
+  style.value = cachedLibertyStyle
 })
 const center = CENTER_MAP
 const zoom = 4

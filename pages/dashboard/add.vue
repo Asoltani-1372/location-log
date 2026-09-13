@@ -8,7 +8,6 @@ async function onSubmit(values: InsertLocationType) {
     method: 'post',
     body: values,
   })
-  navigateTo('/dashboard')
 }
 
 function onSubmitComplete() {
@@ -24,6 +23,10 @@ function onSubmitComplete() {
       </h1>
       <p class="text-sm">
         a location is place that tou traveled or want to travel , it could be city , cuntry or anything
+      </p>
+      <p class="text-xs text-gray-400 mt-2">
+        Photos aren't uploaded here — drop image files into <code>assets/images/</code> in the project,
+        then use "Select Photos" on the location to pick which ones belong to it.
       </p>
     </div>
 
