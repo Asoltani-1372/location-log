@@ -20,6 +20,7 @@ const loading = computed(() => {
 const errorMessage = computed(() => {
   return currentLocationError.value?.statusMessage || deleteError.value
 })
+const photos = useLocationPhotos(() => currentLocation.value?.slug)
 
 async function confirmDelete() {
   try {
@@ -86,6 +87,7 @@ onBeforeRouteUpdate((to) => {
       <p class="text-sm">
         {{ currentLocation?.description }}
       </p>
+      <AppLocationGallery v-if="photos.length" :photos="photos" class="mt-4" />
       <div v-if="!currentLocation.locationLogs.length" class="text-larg mt-4">
         <p class="text-sm">
           add a location Log to get Started
